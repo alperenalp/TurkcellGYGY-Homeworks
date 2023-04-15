@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  <title>2D Breakout Game</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      background-color: cadetblue;
+    }
+
+    canvas {
+      background: #eee;
+      display: block;
+      margin: 100px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="myCanvas" width="800" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById("myCanvas");
+    const canvasCtx = canvas.getContext("2d");
+
+    let ballPosX = canvas.width / 2;
+    let ballPosY = canvas.height - 30;
+
+    let ballSpeedX = 2;
+    let ballSpeedY = -2;
+
+    const ballRadius = 10;
+
+    function drawBall() {
+      canvasCtx.beginPath();
+      canvasCtx.arc(ballPosX, ballPosY, ballRadius, 0, Math.PI * 2);
+      canvasCtx.fillStyle = "#0095DD";
+      canvasCtx.fill();
+      canvasCtx.closePath();
+    }
+
+    function draw() {
+      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBall();
+
+      if (
+        ballPosX + ballSpeedX > canvas.width - ballRadius ||
+        ballPosX + ballSpeedX < ballRadius
+      ) {
+        ballSpeedX = -ballSpeedX;
+      }
+      if (
+        ballPosY + ballSpeedY > canvas.height - ballRadius ||
+        ballPosY + ballSpeedY < ballRadius
+      ) {
+        ballSpeedY = -ballSpeedY;
+      }
+
+      ballPosX += ballSpeedX;
+      ballPosY += ballSpeedY;
+    }
+
+    setInterval(draw, 10);
+  </script>
+</body>
+
+</html>
