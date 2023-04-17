@@ -54,6 +54,13 @@
     const brickOffsetLeft = 15;
 
     let score = 0;
+    let lives = 3;
+
+    function drawLives() {
+      canvasCtx.font = "16px Arial";
+      canvasCtx.fillStyle = "#0095DD";
+      canvasCtx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
+    }
 
     function drawScore() {
       canvasCtx.font = "16px Arial";
@@ -104,7 +111,6 @@
               if (score === brickRowCount * brickColumnCount) {
                 alert("KAZANDIN, TEBRİKLER! " + "SCORE: " + score);
                 document.location.reload();
-                clearInterval(interval);
               }
             }
           }
@@ -164,6 +170,7 @@
       drawBricks();
       collisionDetection();
       drawScore();
+      drawLives();
 
       if (
         ballPosX + ballSpeedX > canvas.width - ballRadius ||
@@ -179,9 +186,18 @@
         if (ballPosX > paddlePosX && ballPosX < paddlePosX + paddleWidth) {
           ballSpeedY = -ballSpeedY;
         } else {
-          alert("OYUN BİTTİ");
-          document.location.reload();
-          clearInterval(interval);
+          lives--;
+          if (lives === 0) {
+            alert("OYUN BİTTİ");
+            document.location.reload();
+          } else {
+            ballPosX = canvas.width / 2;
+            ballPosY = canvas.height - 30;
+            ballSpeedX = 2;
+            ballSpeedY = -2;
+            paddlePosX = (canvas.width - paddleWidth) / 2;
+          }
+
         }
       }
 
@@ -200,9 +216,11 @@
 
       ballPosX += ballSpeedX;
       ballPosY += ballSpeedY;
+
+      requestAnimationFrame(draw);
     }
 
-    const interval = setInterval(draw, 10);
+    draw();
 
 
   </script>
