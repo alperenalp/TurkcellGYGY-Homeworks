@@ -53,6 +53,14 @@
     const brickOffsetTop = 50;
     const brickOffsetLeft = 15;
 
+    let score = 0;
+
+    function drawScore() {
+      canvasCtx.font = "16px Arial";
+      canvasCtx.fillStyle = "#0095DD";
+      canvasCtx.fillText(`Score: ${score}`, 8, 20);
+    }
+
     const bricks = [];
     for (let c = 0; c < brickColumnCount; c++) {
       bricks[c] = [];
@@ -92,6 +100,12 @@
             ) {
               ballSpeedY = -ballSpeedY;
               b.status = 0;
+              score++;
+              if (score === brickRowCount * brickColumnCount) {
+                alert("KAZANDIN, TEBRİKLER!" + "SCORE: "+ score);
+                document.location.reload();
+                clearInterval(interval);
+              }
             }
           }
         }
@@ -141,6 +155,7 @@
       drawPaddle();
       drawBricks();
       collisionDetection();
+      drawScore();
 
       if (
         ballPosX + ballSpeedX > canvas.width - ballRadius ||
@@ -156,7 +171,7 @@
         if (ballPosX > paddlePosX && ballPosX < paddlePosX + paddleWidth) {
           ballSpeedY = -ballSpeedY;
         } else {
-          alert("Oyun Bitti");
+          alert("OYUN BİTTİ");
           document.location.reload();
           clearInterval(interval);
         }
