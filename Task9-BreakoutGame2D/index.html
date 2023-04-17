@@ -93,11 +93,18 @@
       ) {
         ballSpeedX = -ballSpeedX;
       }
-      if (
-        ballPosY + ballSpeedY > canvas.height - ballRadius ||
-        ballPosY + ballSpeedY < ballRadius
-      ) {
+
+      if (ballPosY + ballSpeedY < ballRadius) {
         ballSpeedY = -ballSpeedY;
+      }
+      else if (ballPosY + ballSpeedY > canvas.height - ballRadius) {
+        if (ballPosX > paddlePosX && ballPosX < paddlePosX + paddleWidth) {
+          ballSpeedY = -ballSpeedY;
+        } else {
+          alert("Oyun Bitti");
+          document.location.reload();
+          clearInterval(interval);
+        }
       }
 
       if (rightPressed) {
@@ -117,7 +124,8 @@
       ballPosY += ballSpeedY;
     }
 
-    setInterval(draw, 10);
+    const interval = setInterval(draw, 10);
+
 
   </script>
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
