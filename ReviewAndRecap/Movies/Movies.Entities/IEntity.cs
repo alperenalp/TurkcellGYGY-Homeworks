@@ -1,6 +1,6 @@
 ﻿namespace Movies.Entities
 {
-    public class Class1
+    public interface IEntity
     {
 
     }
