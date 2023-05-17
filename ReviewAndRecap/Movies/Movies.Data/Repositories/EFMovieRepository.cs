@@ -20,7 +20,7 @@ namespace Movies.Data.Repositories
 
         public async Task AddPlayerToMovie(int movieId, List<int> selectedPlayers)
         {
-            var movie = await moviesDbContext.Movies.AsNoTracking().FirstOrDefaultAsync(movie => movie.Id == movieId);
+            var movie = await moviesDbContext.Movies.FirstOrDefaultAsync(movie => movie.Id == movieId);
             foreach(var playerId in selectedPlayers)
             {
                 movie.Players.Add(new MoviesPlayer
@@ -53,7 +53,11 @@ namespace Movies.Data.Repositories
 
         public async Task<IList<Movie>> GetAllAsync()
         {
-            return await moviesDbContext.Movies.AsNoTracking().ToListAsync();
+            return await moviesDbContext.Movies.AsNoTracking()
+                                               .Include(m=>m.Director)
+                                               .Include(m=>m.Players)
+                                               .ThenInclude(mp=>mp.Player)
+                                               .ToListAsync();
         }
 
         public async Task<Movie?> GetByIdAsync(int id)
