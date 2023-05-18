@@ -20,11 +20,9 @@ namespace Movies.Data.Repositories
 
         public async Task DeletePlayerInMovie(int movieId, List<MoviesPlayer> selectedPlayers)
         {
-            var movie = await moviesDbContext.Movies.FirstOrDefaultAsync(movie => movie.Id == movieId);
-            foreach (var player in selectedPlayers)
-            {
-                movie.Players.Remove(player);
-            }
+            var movie = await moviesDbContext.Movies.Include(m => m.Players).ThenInclude(mp => mp.Player).FirstOrDefaultAsync(movie => movie.Id == movieId);
+            var toRemove = selectedPlayers.Select(mp => mp.PlayerId).ToList();
+            movie.Players = movie.Players.Where(mp => !toRemove.Contains(mp.PlayerId)).ToList();
             await moviesDbContext.SaveChangesAsync();
         }
 

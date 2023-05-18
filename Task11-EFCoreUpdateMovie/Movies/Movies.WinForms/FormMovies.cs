@@ -95,7 +95,7 @@ namespace Movies.WinForms
         {
             int movieId = 4;
             List<int> oldPlayers = new List<int> { 1 };
-            List<int> newPlayers = new List<int> { 2 };
+            List<int> newPlayers = new List<int> { 5 };
 
             await movieService.UpdateMoviePlayer(movieId, oldPlayers, newPlayers);  
         }
